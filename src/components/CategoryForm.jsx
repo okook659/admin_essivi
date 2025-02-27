@@ -31,11 +31,11 @@ function CategoryForm() {
                     setError("Erreur lors de la modification")
                 }
             } else {
-                // Ajouter une nouvelle catégorie
+             
                 await axios.post("http://localhost:8000/categories/create", formData);
                 
             }
-            navigate("/categories"); // Retour à la liste
+            navigate("/categories"); 
         } catch (error) {
             console.error("Erreur lors de l'enregistrement :", error);
         }
