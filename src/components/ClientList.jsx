@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 function ClientList() {
   const [clients, setClients] = useState([])
   const [error, setError] = useState("")
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLoad = async () => {
     setError("");
@@ -21,9 +25,34 @@ function ClientList() {
     handleLoad()
   }, [])
 
+  const handleAddClient = () => {
+    navigate("/edit-client/new", { state: { isEditing: false } });
+  }
+
+  const handleEdit = (client) => {
+    navigate(`/edit-client/${client.id}`, { state: { isEditing: true, client: client } });
+  }
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Voulez-vous vraiment supprimer ce client ?")) {
+        try {
+            await axios.delete(`http://localhost:8000/clients/delete/${id}`);
+            setCategories(categories.filter((client) => client.id !== id)); // Mise à jour de la liste
+        } catch (err) {
+            console.error("Erreur lors de la suppression :", err);
+        }
+    }
+  }
+
   return (
     <div className="p-6">
     <h2 className="text-xl font-bold mb-4">Liste des Clients</h2>
+    {/* <button 
+    onClick={handleAddClient} 
+    className="mb-4 bg-green-500 text-white px-4 py-2 rounded"
+>
+    Ajouter un client
+</button> */}
 
     {error && <p className="text-red-500 mb-4">{error}</p>}
 

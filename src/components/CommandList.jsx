@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function CommandList () {
+function CommandList() {
     const [commandes, setCommandes] = useState([]);
     const [clients, setClients] = useState({});
     const [produits, setProduits] = useState({});
@@ -53,11 +53,11 @@ function CommandList () {
 
     const handleAddCategory = () => {
         navigate("/edit-command/new", { state: { isEditing: false } });
-      }
-    
-      const handleEdit = (commande) => {
+    }
+
+    const handleEdit = (commande) => {
         navigate(`/edit-command/${commande.id}`, { state: { isEditing: true, command: commande } });
-      }
+    }
 
     const handleDelete = async (id) => {
         if (window.confirm("Voulez-vous vraiment supprimer cette commande ?")) {
@@ -73,6 +73,12 @@ function CommandList () {
     return (
         <div className="p-6">
             <h2 className="text-xl font-bold mb-4">Liste des Commandes</h2>
+            <button
+                onClick={handleAddCategory}
+                className="mb-4 bg-green-500 text-white px-4 py-2 rounded"
+            >
+                Ajouter une commande
+            </button>
 
             {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -83,23 +89,24 @@ function CommandList () {
                             <th className="border p-2">Client</th>
                             <th className="border p-2">Produit</th>
                             <th className="border p-2">Date</th>
+                            <th className="border p-2">Quantité</th>
                             <th className="border p-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {commandes.map((commande) => (
                             <tr key={commande.id}>
-                                <td className="border p-2">{clients[commande.idClient] || "Inconnu"}</td>
-                                <td className="border p-2">{produits[commande.idProduit] || "Inconnu"}</td>
+                                <td className="border p-2">{clients[commande.idClient] || "Chargement..."}</td>
+                                <td className="border p-2">{produits[commande.idProduit] || "Chargement..."}</td>
                                 <td className="border p-2">{commande.dateCommande}</td>
-
+                                <td className="border p-2">{commande.quantite}</td>
                                 <td className="border p-2">
-                                    <button
+                                    {/* <button
                                         onClick={() => handleEdit(commande)}
                                         className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
                                     >
                                         Modifier
-                                    </button>
+                                    </button> */}
                                     &nbsp;
                                     <button
                                         onClick={() => handleDelete(commande.id)}

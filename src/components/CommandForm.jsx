@@ -16,7 +16,8 @@ function CommandForm() {
     const [formData, setFormData] = useState({
         idClient: commande.idClient,
         idProduit: commande.idProduit,
-        dateCommande: commande.dateCommande
+        dateCommande: commande.dateCommande,
+        quantite: commande.quantite
     });
 
     useEffect(() => {
@@ -24,7 +25,7 @@ function CommandForm() {
             try {
                 const clientsRes = await axios.get("http://localhost:8000/clients/get_all");
                 const produitsRes = await axios.get("http://localhost:8000/produits/get_all");
-                
+
                 setClients(clientsRes.data);
                 setProduits(produitsRes.data);
             } catch (error) {
@@ -34,6 +35,17 @@ function CommandForm() {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (isEditing && clients.length > 0 && produits.length > 0) {
+            setFormData({
+                idClient: commande.idClient,
+                idProduit: commande.idProduit,
+                dateCommande: commande.dateCommande,
+                quantite: commande.quantite
+            });
+        }
+    }, [clients, produits]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,10 +76,10 @@ function CommandForm() {
             <h2 className="text-xl font-bold mb-4">{isEditing ? "Modifier la commande" : "Ajouter une commande"}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                <label className="block">Client :</label>
+                    <label className="block">Client :</label>
                     <select
                         name="idClient"
-                        value={formData.idClient}
+                        value={formData.idClient || ""}
                         onChange={handleChange}
                         className="border p-2 w-75 rounded bg-white text-black mb-3"
                         required
@@ -81,7 +93,7 @@ function CommandForm() {
                     </select>
                 </div>
                 <div>
-                <label className="block">Produit :</label>
+                    <label className="block">Produit :</label>
                     <select
                         name="idProduit"
                         value={formData.idProduit}
@@ -99,11 +111,20 @@ function CommandForm() {
                 </div>
                 <div>
                     <label htmlFor="" className="block">Date de commande :</label>
-                    <input type="date" name="dateCommande" id="dateCommande" 
-                    onChange={handleChange}
-                    value={formData.dateCommande}
-                    className="border p-2 w-75 rounded bg-white text-black mb-3"
-                    required
+                    <input type="date" name="dateCommande" id="dateCommande"
+                        onChange={handleChange}
+                        value={formData.dateCommande}
+                        className="border p-2 w-75 rounded bg-white text-black mb-3"
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="" className="block">Quantité :</label>
+                    <input type="number" name="quantite" id="quantite"
+                        onChange={handleChange}
+                        value={formData.quantite}
+                        className="border p-2 w-75 rounded bg-white text-black mb-3"
+                        required
                     />
                 </div>
                 <button className='mt-4 bg-white text-black px-4 py-2 rounded'>

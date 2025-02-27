@@ -21,7 +21,7 @@ function Login() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("Utilisateur connecté :", userCredential.user);
       alert("Connexion réussie !");
-      window.location.href = "/accueil";
+      window.location.href = "/clients";
     } catch (err) {
       console.error(err);
       setError("Email ou mot de passe incorrect");
@@ -40,11 +40,11 @@ function Login() {
     */}
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
+        {/* <img
           alt="ESSIVI Sarl"
           src={Logo}
           className="mx-auto h-50 w-auto"
-        />
+        /> */}
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white-900">
           Connectez-vous
         </h2>
